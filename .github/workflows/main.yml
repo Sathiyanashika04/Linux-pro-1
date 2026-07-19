@@ -1,0 +1,53 @@
+name: SELinux Lab Autograding
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  autograde:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Initialize Score
+        run: echo "SCORE=0" >> $GITHUB_ENV
+
+      - name: Test 1 - README Exists (2 Marks)
+        run: |
+          if [ -f README.md ]; then
+            echo "README Found"
+            echo "SCORE=$((SCORE+2))" >> $GITHUB_ENV
+          fi
+
+      - name: Test 2 - Script Exists (2 Marks)
+        run: |
+          if [ -f selinux_lab.sh ]; then
+            echo "Script Found"
+            echo "SCORE=$((SCORE+2))" >> $GITHUB_ENV
+          fi
+
+      - name: Test 3 - getenforce Command (2 Marks)
+        run: |
+          if grep -q "getenforce" selinux_lab.sh; then
+            echo "SCORE=$((SCORE+2))" >> $GITHUB_ENV
+          fi
+
+      - name: Test 4 - sestatus Command (2 Marks)
+        run: |
+          if grep -q "sestatus" selinux_lab.sh; then
+            echo "SCORE=$((SCORE+2))" >> $GITHUB_ENV
+          fi
+
+      - name: Test 5 - setenforce and Config File (2 Marks)
+        run: |
+          if grep -q "setenforce" selinux_lab.sh && grep -q "/etc/selinux/config" selinux_lab.sh; then
+            echo "SCORE=$((SCORE+2))" >> $GITHUB_ENV
+          fi
+
+      - name: Display Final Score
+        run: |
+          echo "========================="
+          echo "FINAL SCORE : $SCORE / 10"
+          echo "========================="
