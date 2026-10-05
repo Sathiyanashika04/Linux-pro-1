@@ -1,30 +1,35 @@
 #!/bin/bash
-
 echo "===== SELinux Practical ====="
 
 echo "Current SELinux Mode"
-//include the command for current mode
-
+# Displays the current mode (Enforcing, Permissive, or Disabled)
+getebool &>/dev/null # warm up, but the official command is:
+getenforce
 echo
+
 echo "SELinux Status"
-//include the command for status
-
+# Displays detailed status of the SELinux environment
+sestatus
 echo
+
 echo "Changing to Permissive Mode"
-//include the command for changing the permissive mode
-
+# Sets SELinux to permissive mode temporarily (runtime change)
+setenforce 0
 echo
+
 echo "Current Mode"
-//include the command for current mode
-
+getenforce
 echo
+
 echo "Changing to Enforcing Mode"
-//include the command for enforcing mode
-
+# Sets SELinux to enforcing mode temporarily (runtime change)
+setenforce 1
 echo
+
 echo "Current Mode"
-//include the command for current mode
-
+getenforce
 echo
+
 echo "Configuration File"
+# Displays the persistent setup configuration file
 cat /etc/selinux/config
